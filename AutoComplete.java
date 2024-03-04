@@ -79,10 +79,11 @@ import java.util.ArrayList;
       throw new IllegalArgumentException("Word is null/empty!");
     }
     data = word.charAt(0);
+
     if(root == null) {
       root = new DLBNode(data);
     }
-    // Call a private helper function here
+    // Call a helper method here
     result = add_Helper(root, word, data, 0);
     if(resultAdd) {
       return true;
@@ -96,10 +97,10 @@ import java.util.ArrayList;
     if(result == null) { // continue to traverse and add nodes
       result = new DLBNode(data);
       result.data = word.charAt(position);
-      result.size = 1; // Set size to 1 when we add a node
+      result.size = 1; // Set size to 1
       if(position < word.length() - 1) { // recurse over the child nodes
         result.child = add_Helper(result.child, word, data, position + 1);
-      }
+      } // Once position = word.length, the word is finished being added
       else {
         resultAdd = true;
         result.isWord = true;
@@ -114,7 +115,7 @@ import java.util.ArrayList;
       result.size++;
       return result;
     }
-    else if(result.data == word.charAt(position)) { // if we found a node containing the letter, traverse!
+    else if(result.data == word.charAt(position)) { // if we find a node that already contains the letter, traverse down
       result.size++; // We would increment size here since we'll use the node as part of ANOTHER word
       if(position < word.length() - 1) {
         result.child = add_Helper(result.child, word, data, position + 1); // recurse the child
@@ -153,7 +154,7 @@ import java.util.ArrayList;
 
   // This is a helper method for advance() - it will set currString and tempNode in order for retreat() to work correctly
   // If the currentPrefix is found, this method will set isFound = true
-  private void advance_Helper(char c) {
+  public void advance_Helper(char c) {
 
     //base case: currentPrefix is empty
     if(currentPrefix.length() <= 0) {
@@ -213,6 +214,16 @@ import java.util.ArrayList;
     currentPrefix = currentPrefix.append(c);
     // must traverse through siblings of currentNode.child
     // char data doesn't match
+    if(tempNode.data != c) {
+      while(tempNode.nextSibling != null) {
+        if(tempNode.data == c) {
+          isFound = true;
+          break;
+        }
+        // Updata tempNode
+        tempNode = tempNode.nextSibling;
+      }
+    }
     if(tempNode.data != c) { // set tempNode back to original & set currentNode to null (currentPrefix is gone)
       tempNode = currentNode;
       currentNode = null;
@@ -236,8 +247,39 @@ import java.util.ArrayList;
   
   @Override
   public void retreat() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'retreat'");
+    if(currentPrefix.length() <= 0) {
+      throw new IllegalStateException();
+    }
+    // Once we remove a character, it will become currStringc
+    else if(currentPrefix.length() == currString.length() + 1) {
+      currentPrefix.deleteCharAt(currentPrefix.length() - 1);
+      currentNode = tempNode;
+      return;
+    }
+    // currString and currentPrefix are matched because currentPrefix is in the dictionary
+    else if(currString.equals(currentPrefix)) {
+      currentPrefix.deleteCharAt(currentPrefix.length() - 1);
+      currString.deleteCharAt(currString.length() - 1);
+      return;
+    }
+    // don't update currentNode or tempNode when retreating
+    else {
+      currentPrefix.deleteCharAt(currentPrefix.length() - 1);
+    }
+
+    // traverse up to the parent node
+    if(tempNode.parent != null) {
+      tempNode = tempNode.parent;
+    }
+    else {
+      // We need to get to the parent of the direct child, so we traverse backwards through siblings
+      while(tempNode.previousSibling != null) {
+        tempNode = tempNode.previousSibling;
+      }
+      // Once we hit the direct child, get parent node
+      tempNode = tempNode.parent;
+    }
+    currentNode = tempNode;
   }
 
   /**
@@ -416,8 +458,44 @@ import java.util.ArrayList;
         System.out.print(" *");
       }
       System.out.println(" (" + node.size + ")");
+      if(node.parent != null) {  
+		    System.out.println("the parent is" + node.parent.data);
+      } 
+      else { 
+		    System.out.println("the parent is null");
+	    } 
+	    if(node.nextSibling != null) {  
+		    System.out.println("the next sibling is" + node.nextSibling.data); 
+	    } 
+      else { 
+		    System.out.println("the sibling is null");
+	    } 
+	    if(node.previousSibling != null) {  
+		    System.out.println("the prev sibling is" + node.nextSibling.data); 
+	    } 
+	    else { 
+		    System.out.println("the prev sibling is null");
+	    }
       printTrie(node.child, depth+1);
       printTrie(node.nextSibling, depth);
     }
   }
+  
+  //return a pointer to the node at the end of the start String.
+  private DLBNode getNode(DLBNode node, String start, int index){
+    if(start.length() == 0){
+      return node;
+    }
+    DLBNode result = node;
+    if(node != null){
+      if((index < start.length()-1) && (node.data == start.charAt(index))) {
+          result = getNode(node.child, start, index+1);
+      } else if((index == start.length()-1) && (node.data == start.charAt(index))) {
+          result = node;
+      } else {
+          result = getNode(node.nextSibling, start, index);
+      }
+    }
+    return result;
+  } 
 }

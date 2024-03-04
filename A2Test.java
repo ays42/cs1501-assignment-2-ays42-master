@@ -32,10 +32,10 @@ public class A2Test {
       //System.out.println("Adding " + word);
       ac.add(word);
 
-     ((AutoComplete)ac).printTrie();
+     // ((AutoComplete)ac).printTrie();
     }
     fileScan.close();
-
+    // ((AutoComplete)ac).printTrie("fun");
     testAutoComplete(); 
   }
 
