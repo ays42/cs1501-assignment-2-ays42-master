@@ -5,45 +5,28 @@ every assignment. Also be sure to submit all materials
 following the procedures described in the assignment
 description.
 
-Name: ______________________________
+Name: Ayush Sridhar
 
-Assignment #: ______________
+Assignment #: 2
 
 Source code (.java) file name(s):
 
-_________________________________________________________
+    A2Test.java
+    AutoComplete.java
+    AutoCompleteInterface.java
 
-_________________________________________________________
+Does your program compile without errors?: Yes
 
-Does your program compile without errors?: _____________
+If not, what is/are the error(s)?: N/A
 
-If not, what is/are the error(s)?:
-
-_________________________________________________________
-
-_________________________________________________________
-
-_________________________________________________________
-
-Does your program run without errors?: _____________
+Does your program run without errors?: Yes
 
 If not, what is/are the error(s) and which parts of your
-program run correctly?:
-
-_________________________________________________________
-
-_________________________________________________________
-
-_________________________________________________________
-
-_________________________________________________________
-
+program run correctly?: N/A
 
 Additional comments (including problems and extra credit):
-_________________________________________________________
 
-_________________________________________________________
-
-_________________________________________________________
-
-_________________________________________________________
+    I never fully finished the 'public ArrayList<String> retrievePredictions()'
+    method, yet my code still ran perfectly fine under the autograder on GradeScope.
+    If points need to be taken off because of this, I understand as I never finished
+    it in the first place!

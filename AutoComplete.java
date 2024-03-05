@@ -163,7 +163,7 @@ import java.util.ArrayList;
       currString = new StringBuilder();
       currentNode = root;
       tempNode = currentNode;
-
+      
       currentPrefix.append(c);
       currString.append(c);
       
@@ -250,7 +250,7 @@ import java.util.ArrayList;
     if(currentPrefix.length() <= 0) {
       throw new IllegalStateException();
     }
-    // Once we remove a character, it will become currStringc
+    // Once we remove a character, it will become currString
     else if(currentPrefix.length() == currString.length() + 1) {
       currentPrefix.deleteCharAt(currentPrefix.length() - 1);
       currentNode = tempNode;
@@ -480,9 +480,9 @@ import java.util.ArrayList;
       printTrie(node.nextSibling, depth);
     }
   }
-  
+
   //return a pointer to the node at the end of the start String.
-  private DLBNode getNode(DLBNode node, String start, int index){
+  /* private DLBNode getNode(DLBNode node, String start, int index){
     if(start.length() == 0){
       return node;
     }
@@ -497,5 +497,5 @@ import java.util.ArrayList;
       }
     }
     return result;
-  } 
+  }  */
 }
